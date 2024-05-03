@@ -1,175 +1,242 @@
-# COS 484 Final Project (name TBD)
+<p align="center">
+  <img src="docs/fairseq_logo.png" width="150">
+  <br />
+  <br />
+  <a href="https://opensource.fb.com/support-ukraine"><img alt="Support Ukraine" src="https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB" /></a>
+  <a href="https://github.com/pytorch/fairseq/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+  <a href="https://github.com/pytorch/fairseq/releases"><img alt="Latest Release" src="https://img.shields.io/github/release/pytorch/fairseq.svg" /></a>
+  <a href="https://github.com/pytorch/fairseq/actions?query=workflow:build"><img alt="Build Status" src="https://github.com/pytorch/fairseq/workflows/build/badge.svg" /></a>
+  <a href="https://fairseq.readthedocs.io/en/latest/?badge=latest"><img alt="Documentation Status" src="https://readthedocs.org/projects/fairseq/badge/?version=latest" /></a>
+  <a href="https://app.circleci.com/pipelines/github/facebookresearch/fairseq/"><img alt="CicleCI Status" src="https://circleci.com/gh/facebookresearch/fairseq.svg?style=shield" /></a>
+</p>
 
-This repository contains the source code to run our COS 429 Final Project: [to-be project].
+--------------------------------------------------------------------------------
 
-Links may go here mayhap. Same readme from Mistral repo which we'll change and work off of:
+Fairseq(-py) is a sequence modeling toolkit that allows researchers and
+developers to train custom models for translation, summarization, language
+modeling and other text generation tasks.
 
-## Deployment
+We provide reference implementations of various sequence modeling papers:
 
-The `deploy` folder contains code to build a [vLLM](https://github.com/vllm-project/vllm) image with the required dependencies to serve the Mistral AI model. In the image, the [transformers](https://github.com/huggingface/transformers/) library is used instead of the reference implementation. To build it:
+<details><summary>List of implemented papers</summary><p>
 
-```bash
-docker build deploy --build-arg MAX_JOBS=8
+* **Convolutional Neural Networks (CNN)**
+  + [Language Modeling with Gated Convolutional Networks (Dauphin et al., 2017)](examples/language_model/conv_lm/README.md)
+  + [Convolutional Sequence to Sequence Learning (Gehring et al., 2017)](examples/conv_seq2seq/README.md)
+  + [Classical Structured Prediction Losses for Sequence to Sequence Learning (Edunov et al., 2018)](https://github.com/pytorch/fairseq/tree/classic_seqlevel)
+  + [Hierarchical Neural Story Generation (Fan et al., 2018)](examples/stories/README.md)
+  + [wav2vec: Unsupervised Pre-training for Speech Recognition (Schneider et al., 2019)](examples/wav2vec/README.md)
+* **LightConv and DynamicConv models**
+  + [Pay Less Attention with Lightweight and Dynamic Convolutions (Wu et al., 2019)](examples/pay_less_attention_paper/README.md)
+* **Long Short-Term Memory (LSTM) networks**
+  + Effective Approaches to Attention-based Neural Machine Translation (Luong et al., 2015)
+* **Transformer (self-attention) networks**
+  + Attention Is All You Need (Vaswani et al., 2017)
+  + [Scaling Neural Machine Translation (Ott et al., 2018)](examples/scaling_nmt/README.md)
+  + [Understanding Back-Translation at Scale (Edunov et al., 2018)](examples/backtranslation/README.md)
+  + [Adaptive Input Representations for Neural Language Modeling (Baevski and Auli, 2018)](examples/language_model/README.adaptive_inputs.md)
+  + [Lexically constrained decoding with dynamic beam allocation (Post & Vilar, 2018)](examples/constrained_decoding/README.md)
+  + [Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context (Dai et al., 2019)](examples/truncated_bptt/README.md)
+  + [Adaptive Attention Span in Transformers (Sukhbaatar et al., 2019)](examples/adaptive_span/README.md)
+  + [Mixture Models for Diverse Machine Translation: Tricks of the Trade (Shen et al., 2019)](examples/translation_moe/README.md)
+  + [RoBERTa: A Robustly Optimized BERT Pretraining Approach (Liu et al., 2019)](examples/roberta/README.md)
+  + [Facebook FAIR's WMT19 News Translation Task Submission (Ng et al., 2019)](examples/wmt19/README.md)
+  + [Jointly Learning to Align and Translate with Transformer Models (Garg et al., 2019)](examples/joint_alignment_translation/README.md )
+  + [Multilingual Denoising Pre-training for Neural Machine Translation (Liu et at., 2020)](examples/mbart/README.md)
+  + [Neural Machine Translation with Byte-Level Subwords (Wang et al., 2020)](examples/byte_level_bpe/README.md)
+  + [Unsupervised Quality Estimation for Neural Machine Translation (Fomicheva et al., 2020)](examples/unsupervised_quality_estimation/README.md)
+  + [wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations (Baevski et al., 2020)](examples/wav2vec/README.md)
+  + [Generating Medical Reports from Patient-Doctor Conversations Using Sequence-to-Sequence Models (Enarvi et al., 2020)](examples/pointer_generator/README.md)
+  + [Linformer: Self-Attention with Linear Complexity (Wang et al., 2020)](examples/linformer/README.md)
+  + [Cross-lingual Retrieval for Iterative Self-Supervised Training (Tran et al., 2020)](examples/criss/README.md)
+  + [Deep Transformers with Latent Depth (Li et al., 2020)](examples/latent_depth/README.md)
+  + [Unsupervised Cross-lingual Representation Learning for Speech Recognition (Conneau et al., 2020)](https://arxiv.org/abs/2006.13979)
+  + [Self-training and Pre-training are Complementary for Speech Recognition (Xu et al., 2020)](https://arxiv.org/abs/2010.11430)
+  + [Robust wav2vec 2.0: Analyzing Domain Shift in Self-Supervised Pre-Training (Hsu, et al., 2021)](https://arxiv.org/abs/2104.01027)
+  + [Unsupervised Speech Recognition (Baevski, et al., 2021)](https://arxiv.org/abs/2105.11084)
+  + [Simple and Effective Zero-shot Cross-lingual Phoneme Recognition (Xu et al., 2021)](https://arxiv.org/abs/2109.11680)
+  + [VideoCLIP: Contrastive Pre-training for Zero-shot Video-Text Understanding (Xu et. al., 2021)](https://arxiv.org/pdf/2109.14084.pdf)
+  + [VLM: Task-agnostic Video-Language Model Pre-training for Video Understanding (Xu et. al., 2021)](https://aclanthology.org/2021.findings-acl.370.pdf)
+  + [NormFormer: Improved Transformer Pretraining with Extra Normalization (Shleifer et. al, 2021)](examples/normformer/README.md)
+* **Non-autoregressive Transformers**
+  + Non-Autoregressive Neural Machine Translation (Gu et al., 2017)
+  + Deterministic Non-Autoregressive Neural Sequence Modeling by Iterative Refinement (Lee et al. 2018)
+  + Insertion Transformer: Flexible Sequence Generation via Insertion Operations (Stern et al. 2019)
+  + Mask-Predict: Parallel Decoding of Conditional Masked Language Models (Ghazvininejad et al., 2019)
+  + [Levenshtein Transformer (Gu et al., 2019)](examples/nonautoregressive_translation/README.md)
+* **Finetuning**
+  + [Better Fine-Tuning by Reducing Representational Collapse (Aghajanyan et al. 2020)](examples/rxf/README.md)
+
+</p></details>
+
+### What's New:
+* May 2023 [Released models for Scaling Speech Technology to 1,000+ Languages  (Pratap, et al., 2023)](examples/mms/README.md)
+* June 2022 [Released code for wav2vec-U 2.0 from Towards End-to-end Unsupervised Speech Recognition (Liu, et al., 2022)](examples/wav2vec/unsupervised/README.md)
+* May 2022 [Integration with xFormers](https://github.com/facebookresearch/xformers)
+* December 2021 [Released Direct speech-to-speech translation code](examples/speech_to_speech/README.md)
+* October 2021 [Released VideoCLIP and VLM models](examples/MMPT/README.md)
+* October 2021 [Released multilingual finetuned XLSR-53 model](examples/wav2vec/README.md)
+* September 2021 [`master` branch renamed to `main`](https://github.com/github/renaming).
+* July 2021 [Released DrNMT code](examples/discriminative_reranking_nmt/README.md)
+* July 2021 [Released Robust wav2vec 2.0 model](examples/wav2vec/README.md)
+* June 2021 [Released XLMR-XL and XLMR-XXL models](examples/xlmr/README.md)
+* May 2021 [Released Unsupervised Speech Recognition code](examples/wav2vec/unsupervised/README.md)
+* March 2021 [Added full parameter and optimizer state sharding + CPU offloading](examples/fully_sharded_data_parallel/README.md)
+* February 2021 [Added LASER training code](examples/laser/README.md)
+* December 2020: [Added Adaptive Attention Span code](examples/adaptive_span/README.md)
+* December 2020: [GottBERT model and code released](examples/gottbert/README.md)
+* November 2020: Adopted the [Hydra](https://github.com/facebookresearch/hydra) configuration framework
+  * [see documentation explaining how to use it for new and existing projects](docs/hydra_integration.md)
+* November 2020: [fairseq 0.10.0 released](https://github.com/pytorch/fairseq/releases/tag/v0.10.0)
+* October 2020: [Added R3F/R4F (Better Fine-Tuning) code](examples/rxf/README.md)
+* October 2020: [Deep Transformer with Latent Depth code released](examples/latent_depth/README.md)
+* October 2020: [Added CRISS models and code](examples/criss/README.md)
+
+<details><summary>Previous updates</summary><p>
+
+* September 2020: [Added Linformer code](examples/linformer/README.md)
+* September 2020: [Added pointer-generator networks](examples/pointer_generator/README.md)
+* August 2020: [Added lexically constrained decoding](examples/constrained_decoding/README.md)
+* August 2020: [wav2vec2 models and code released](examples/wav2vec/README.md)
+* July 2020: [Unsupervised Quality Estimation code released](examples/unsupervised_quality_estimation/README.md)
+* May 2020: [Follow fairseq on Twitter](https://twitter.com/fairseq)
+* April 2020: [Monotonic Multihead Attention code released](examples/simultaneous_translation/README.md)
+* April 2020: [Quant-Noise code released](examples/quant_noise/README.md)
+* April 2020: [Initial model parallel support and 11B parameters unidirectional LM released](examples/megatron_11b/README.md)
+* March 2020: [Byte-level BPE code released](examples/byte_level_bpe/README.md)
+* February 2020: [mBART model and code released](examples/mbart/README.md)
+* February 2020: [Added tutorial for back-translation](https://github.com/pytorch/fairseq/tree/main/examples/backtranslation#training-your-own-model-wmt18-english-german)
+* December 2019: [fairseq 0.9.0 released](https://github.com/pytorch/fairseq/releases/tag/v0.9.0)
+* November 2019: [VizSeq released (a visual analysis toolkit for evaluating fairseq models)](https://facebookresearch.github.io/vizseq/docs/getting_started/fairseq_example)
+* November 2019: [CamemBERT model and code released](examples/camembert/README.md)
+* November 2019: [BART model and code released](examples/bart/README.md)
+* November 2019: [XLM-R models and code released](examples/xlmr/README.md)
+* September 2019: [Nonautoregressive translation code released](examples/nonautoregressive_translation/README.md)
+* August 2019: [WMT'19 models released](examples/wmt19/README.md)
+* July 2019: fairseq relicensed under MIT license
+* July 2019: [RoBERTa models and code released](examples/roberta/README.md)
+* June 2019: [wav2vec models and code released](examples/wav2vec/README.md)
+
+</p></details>
+
+### Features:
+
+* multi-GPU training on one machine or across multiple machines (data and model parallel)
+* fast generation on both CPU and GPU with multiple search algorithms implemented:
+  + beam search
+  + Diverse Beam Search ([Vijayakumar et al., 2016](https://arxiv.org/abs/1610.02424))
+  + sampling (unconstrained, top-k and top-p/nucleus)
+  + [lexically constrained decoding](examples/constrained_decoding/README.md) (Post & Vilar, 2018)
+* [gradient accumulation](https://fairseq.readthedocs.io/en/latest/getting_started.html#large-mini-batch-training-with-delayed-updates) enables training with large mini-batches even on a single GPU
+* [mixed precision training](https://fairseq.readthedocs.io/en/latest/getting_started.html#training-with-half-precision-floating-point-fp16) (trains faster with less GPU memory on [NVIDIA tensor cores](https://developer.nvidia.com/tensor-cores))
+* [extensible](https://fairseq.readthedocs.io/en/latest/overview.html): easily register new models, criterions, tasks, optimizers and learning rate schedulers
+* [flexible configuration](docs/hydra_integration.md) based on [Hydra](https://github.com/facebookresearch/hydra) allowing a combination of code, command-line and file based configuration
+* [full parameter and optimizer state sharding](examples/fully_sharded_data_parallel/README.md)
+* [offloading parameters to CPU](examples/fully_sharded_data_parallel/README.md)
+
+We also provide [pre-trained models for translation and language modeling](#pre-trained-models-and-examples)
+with a convenient `torch.hub` interface:
+
+``` python
+en2de = torch.hub.load('pytorch/fairseq', 'transformer.wmt19.en-de.single_model')
+en2de.translate('Hello world', beam=5)
+# 'Hallo Welt'
 ```
 
-Instructions to run the image can be found in the [official documentation](https://docs.mistral.ai/quickstart).
+See the PyTorch Hub tutorials for [translation](https://pytorch.org/hub/pytorch_fairseq_translation/)
+and [RoBERTa](https://pytorch.org/hub/pytorch_fairseq_roberta/) for more examples.
 
-## Installation
+# Requirements and Installation
 
-```
-pip install -r requirements.txt
-```
+* [PyTorch](http://pytorch.org/) version >= 1.10.0
+* Python version >= 3.8
+* For training new models, you'll also need an NVIDIA GPU and [NCCL](https://github.com/NVIDIA/nccl)
+* **To install fairseq** and develop locally:
 
-## Download the model
+``` bash
+git clone https://github.com/pytorch/fairseq
+cd fairseq
+pip install --editable ./
 
-```
-wget https://models.mistralcdn.com/mistral-7b-v0-1/mistral-7B-v0.1.tar (md5sum: 37dab53973db2d56b2da0a033a15307f)
-tar -xf mistral-7B-v0.1.tar
-```
+# on MacOS:
+# CFLAGS="-stdlib=libc++" pip install --editable ./
 
-## Run the model
-
-```
-python -m main demo /path/to/mistral-7B-v0.1/
-# To give your own prompts
-python -m main interactive /path/to/mistral-7B-v0.1/
-```
-
-Change `temperature` or `max_tokens` using:
-
-```
-python -m main interactive /path/to/mistral-7B-v0.1/ --max_tokens 256 --temperature 1.0
+# to install the latest stable release (0.10.x)
+# pip install fairseq
 ```
 
-If you want a self-contained implementation, look at `one_file_ref.py`, or run it with
+* **For faster training** install NVIDIA's [apex](https://github.com/NVIDIA/apex) library:
 
-```
-python -m one_file_ref /path/to/mistral-7B-v0.1/
-
-This is a test of the emergency broadcast system. This is only a test.
-
-If this were a real emergency, you would be told what to do.
-
-This is a test
-=====================
-This is another test of the new blogging software. I’m not sure if I’m going to keep it or not. I’m not sure if I’m going to keep
-=====================
-This is a third test, mistral AI is very good at testing. 🙂
-
-This is a third test, mistral AI is very good at testing. 🙂
-
-This
-=====================
+``` bash
+git clone https://github.com/NVIDIA/apex
+cd apex
+pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" \
+  --global-option="--deprecated_fused_adam" --global-option="--xentropy" \
+  --global-option="--fast_multihead_attn" ./
 ```
 
-To run logits equivalence through chunking and sliding window, launch
+* **For large datasets** install [PyArrow](https://arrow.apache.org/docs/python/install.html#using-pip): `pip install pyarrow`
+* If you use Docker make sure to increase the shared memory size either with `--ipc=host` or `--shm-size`
+ as command line options to `nvidia-docker run` .
 
+# Getting Started
+
+The [full documentation](https://fairseq.readthedocs.io/) contains instructions
+for getting started, training new models and extending fairseq with new model
+types and tasks.
+
+# Pre-trained models and examples
+
+We provide pre-trained models and pre-processed, binarized test sets for several tasks listed below,
+as well as example training and evaluation commands.
+
+* [Translation](examples/translation/README.md): convolutional and transformer models are available
+* [Language Modeling](examples/language_model/README.md): convolutional and transformer models are available
+
+We also have more detailed READMEs to reproduce results from specific papers:
+
+* [XLS-R: Self-supervised Cross-lingual Speech Representation Learning at Scale (Babu et al., 2021)](examples/wav2vec/xlsr/README.md)
+* [Cross-lingual Retrieval for Iterative Self-Supervised Training (Tran et al., 2020)](examples/criss/README.md)
+* [wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations (Baevski et al., 2020)](examples/wav2vec/README.md)
+* [Unsupervised Quality Estimation for Neural Machine Translation (Fomicheva et al., 2020)](examples/unsupervised_quality_estimation/README.md)
+* [Training with Quantization Noise for Extreme Model Compression ({Fan*, Stock*} et al., 2020)](examples/quant_noise/README.md)
+* [Neural Machine Translation with Byte-Level Subwords (Wang et al., 2020)](examples/byte_level_bpe/README.md)
+* [Multilingual Denoising Pre-training for Neural Machine Translation (Liu et at., 2020)](examples/mbart/README.md)
+* [Reducing Transformer Depth on Demand with Structured Dropout (Fan et al., 2019)](examples/layerdrop/README.md)
+* [Jointly Learning to Align and Translate with Transformer Models (Garg et al., 2019)](examples/joint_alignment_translation/README.md)
+* [Levenshtein Transformer (Gu et al., 2019)](examples/nonautoregressive_translation/README.md)
+* [Facebook FAIR's WMT19 News Translation Task Submission (Ng et al., 2019)](examples/wmt19/README.md)
+* [RoBERTa: A Robustly Optimized BERT Pretraining Approach (Liu et al., 2019)](examples/roberta/README.md)
+* [wav2vec: Unsupervised Pre-training for Speech Recognition (Schneider et al., 2019)](examples/wav2vec/README.md)
+* [Mixture Models for Diverse Machine Translation: Tricks of the Trade (Shen et al., 2019)](examples/translation_moe/README.md)
+* [Pay Less Attention with Lightweight and Dynamic Convolutions (Wu et al., 2019)](examples/pay_less_attention_paper/README.md)
+* [Understanding Back-Translation at Scale (Edunov et al., 2018)](examples/backtranslation/README.md)
+* [Classical Structured Prediction Losses for Sequence to Sequence Learning (Edunov et al., 2018)](https://github.com/pytorch/fairseq/tree/classic_seqlevel)
+* [Hierarchical Neural Story Generation (Fan et al., 2018)](examples/stories/README.md)
+* [Scaling Neural Machine Translation (Ott et al., 2018)](examples/scaling_nmt/README.md)
+* [Convolutional Sequence to Sequence Learning (Gehring et al., 2017)](examples/conv_seq2seq/README.md)
+* [Language Modeling with Gated Convolutional Networks (Dauphin et al., 2017)](examples/language_model/README.conv.md)
+
+# Join the fairseq community
+
+* Twitter: https://twitter.com/fairseq
+* Facebook page: https://www.facebook.com/groups/fairseq.users
+* Google group: https://groups.google.com/forum/#!forum/fairseq-users
+
+# License
+
+fairseq(-py) is MIT-licensed.
+The license applies to the pre-trained models as well.
+
+# Citation
+
+Please cite as:
+
+``` bibtex
+@inproceedings{ott2019fairseq,
+  title = {fairseq: A Fast, Extensible Toolkit for Sequence Modeling},
+  author = {Myle Ott and Sergey Edunov and Alexei Baevski and Angela Fan and Sam Gross and Nathan Ng and David Grangier and Michael Auli},
+  booktitle = {Proceedings of NAACL-HLT 2019: Demonstrations},
+  year = {2019},
+}
 ```
-python -m test_generate
-```
-
-### Running large models
-
-When running models that are too large to fit a single GPU's memory, use pipeline parallelism (PP) and `torchrun`. This is needed to run `Mixtral-7B-8x`. The code below does 2-way PP.
-
-```
-torchrun --nproc-per-node 2 -m main demo /path/to/mixtral-7B-8x-v0.1/ --num_pipeline_ranks=2
-```
-
-> [!Note]
-> PP is not supported when running in interactive mode.
-
-# Sliding window attention
-
-## Vanilla attention
-
-Attention is how information is shared between tokens in a sequence.
-In vanilla transformers, attention follows a causal mask: each token in the sequence can attend to itself and all the tokens in the past.
-This ensures that the model is causal, i.e. it can only use information from the past to predict the future.
-
-![Causal attention mask](assets/full_attention.png)
-
-## Sliding window to speed-up inference and reduce memory pressure
-
-The number of operations of attention is quadratic in the sequence length, and the memory pressure is linear in the sequence length.
-At inference time, this incurs higher latency and smaller throughput due to reduced cache availability.
-To alleviate this issue, we use a sliding window attention [1,2]: each token can attend to at most W tokens in the past (here, W=3).
-
-![Sliding window attention](assets/sliding_attention.png)
-
-Note that tokens outside the sliding window still influence next word prediction.
-At each attention layer, information can move forward by W tokens at most: after two attention layers, information can move forward by 2W tokens, etc.
-For instance in a sequence of length 16K and a sliding window of 4K, after 4 layers, information has propagated to the full sequence length.
-
-![Attention through layers](assets/attention_through_layers.png)
-
-Empirically, we see that longer contexts do help _even outside the sliding window_ but when the sequence length becomes too large, the model does not use the full context anymore.
-
-## Rolling buffer cache
-
-We implement a rolling buffer cache.
-The cache has a fixed size of W, and we store the (key, value) for position i in cache position i % W.
-When the position i is larger than W, past values in the cache are overwritten.
-
-![Rolling cache](assets/rolling_cache.png)
-
-## Pre-fill and chunking
-
-When generating a sequence, we need to predict tokens one-by-one, as each token is conditioned on the previous ones.
-However, the prompt is known in advance, and we can pre-fill the (k, v) cache with the prompt.
-If the prompt is very large, we can chunk it into smaller pieces, and pre-fill the cache with each chunk.
-For this we can choose as chunk size the window size. For each chunk, we thus need to compute the attention over the cache and over the chunk.
-
-![Chunking](assets/chunking.png)
-
-# Sparse Mixture of Experts (SMoE)
-
-Sparse Mixture of Experts allows one to decouple throughput from memory costs by only activating subsets of the overall model for each token. In this approach, each token is assigned to one or more "experts" -- a separate set of weights -- and only processed by sunch experts. This division happens at feedforward layers of the model. The expert models specialize in different aspects of the data, allowing them to capture complex patterns and make more accurate predictions.
-
-![SMoE](assets/smoe.png)
-
-## Pipeline Parallelism
-
-Pipeline parallelism is a set of techniques for partitioning models, enabling the distribution of a large model across multiple GPUs. We provide a simple implementation of pipeline parallelism, which allows our larger models to be executed within the memory constraints of modern GPUs. Note that this implementation favours simplicity over throughput efficiency, and most notabably does not include microbatching.
-
-## Integrations and related projects
-
-### Model platforms
-
-- Use Mistral 7B Instruct on [Mistral AI official API](https://console.mistral.ai/) (La Plateforme)
-- Use Mistral AI in HuggingFace:
-  - [Mistral-7B-v0.1](https://huggingface.co/mistralai/Mistral-7B-v0.1)
-  - [Mistral-7B-Instruct-v0.1](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1)
-- Use Mistral 7B on [Vertex AI](https://github.com/GoogleCloudPlatform/vertex-ai-samples/blob/main/notebooks/community/model_garden/model_garden_pytorch_mistral.ipynb)
-- Use Mistral 7B on [Replicate](https://replicate.com/lucataco/mistral-7b-v0.1)
-- Use Mistral 7B on [Sagemaker Jumpstart](https://aws.amazon.com/blogs/machine-learning/mistral-7b-foundation-models-from-mistral-ai-are-now-available-in-amazon-sagemaker-jumpstart/)
-- Use Mistral 7B on [Baseten](https://app.baseten.co/explore/)
-
-### Applications
-
-- Compare Mistral 7B to Llama 13B on [LLMBoxing](https://llmboxing.com/)
-- Compare Mistral 7B to 10+ LLMs on [Chatbot Arena](https://chat.lmsys.org/) or host it yourself with [FastChat](https://github.com/lm-sys/FastChat)
-- Use Mistral 7B in [Dust](https://dust.tt/)
-- Speak to Mistral AI Instruct on [Perplexity labs](https://labs.perplexity.ai/) (warning: deployed version is not [guardrailed](https://docs.mistral.ai/usage/guardrailing))
-- Use Mistral 7B in [Quivr](https://blog.quivr.app/is-mistral-a-good-replacement-for-openai/)
-- Use Mistral 7B or its Zephyr derivate on [LlamaIndex](https://docs.llamaindex.ai/en/stable/core_modules/model_modules/llms/root.html#open-source-llms)
-
-### Local deployment
-
-- [Ollama](https://ollama.ai/library/mistral) local deployment
-- [GGML](https://github.com/ggerganov/ggml) local deployment
-- [TextSynth](https://textsynth.com/pricing.html) local deployment
-
-### Derived models
-
-- Multimodal: [BakLLaVa-1](https://huggingface.co/SkunkworksAI/BakLLaVA-1)
-
-- Model fine-tuned on direct preferences: [Zephyr-7B-alpha](https://huggingface.co/HuggingFaceH4/zephyr-7b-alpha)
-
-- Model fine-tuned on generated data: [OpenOrca](https://huggingface.co/Open-Orca/Mistral-7B-OpenOrca)
-
-## References
-
-[1] [Generating Long Sequences with Sparse Transformers, Child et al. 2019](https://arxiv.org/pdf/1904.10509.pdf)
-
-[2] [Longformer: The Long-Document Transformer, Beltagy et al. 2020](https://arxiv.org/pdf/2004.05150v2.pdf)

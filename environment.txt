@@ -1,0 +1,2 @@
+Python 3.12.3
+Darwin dynamic-oit-ip4-wifirestricted03-10-48-27-55.princeton.edu 23.4.0 Darwin Kernel Version 23.4.0: Fri Mar 15 00:19:22 PDT 2024; root:xnu-10063.101.17~1/RELEASE_ARM64_T8112 arm64
